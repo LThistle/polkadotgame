@@ -15,8 +15,6 @@ public class PolkadotGame
       polkadotFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       polkadotFrame.setContentPane(new PolkadotPanel());
       polkadotFrame.setVisible(true);
-      polkadotFrame.setCursor( polkadotFrame.getToolkit().createCustomCursor(
-                   new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),new Point(),null));
    }
 }
 
@@ -32,6 +30,8 @@ class PolkadotPanel extends JPanel
    
    public PolkadotPanel()
    {
+      setCursor(getToolkit().createCustomCursor(
+                   new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),new Point(),null));
       myImage = new BufferedImage(FRAME, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = myImage.getGraphics();
       myMouse = new MouseDot(50,1,1,randomColor());
@@ -112,6 +112,10 @@ class PolkadotPanel extends JPanel
       }
       int mouseX = (int)MouseInfo.getPointerInfo().getLocation().getX();   
       mouseX-= previous.getX();
+      if(mouseX>=800)
+         return 800;
+      if(mouseX<=0)
+         return 0;
       return mouseX;
    }
    
@@ -126,6 +130,10 @@ class PolkadotPanel extends JPanel
       }
       int mouseY = (int)MouseInfo.getPointerInfo().getLocation().getY();
       mouseY-= previous.getY();
+      if(mouseY>=800)
+         return 800;
+      if(mouseY<=0)
+         return 0;
       return mouseY;
    }
    
@@ -140,13 +148,13 @@ class PolkadotPanel extends JPanel
    
    private boolean hasExited(Polkadot p)
    {
-      if(p.getX()-p.getRadius()>=800)
+      if(p.getX()-p.getRadius()>=850)
          return true;
-      if(p.getX()+p.getRadius()<=0)
+      if(p.getX()+p.getRadius()<=-50)
          return true;
-      if(p.getY()-p.getRadius()>=800)
+      if(p.getY()-p.getRadius()>=850)
          return true;
-      if(p.getY()+p.getRadius()<=0)
+      if(p.getY()+p.getRadius()<=-50)
          return true;
       return false;
    }
