@@ -28,6 +28,7 @@ class PolkadotPanel extends JPanel
    private Timer t;
    private Timer t2;
    private JLabel myScore;
+   private boolean isAlive = true;
    
    public PolkadotPanel()
    {
@@ -83,6 +84,7 @@ class PolkadotPanel extends JPanel
             {
                t.stop();
                t2.stop();
+               isAlive = false;
             }
          }     
          repaint();
@@ -190,22 +192,22 @@ class PolkadotPanel extends JPanel
 
 class Polkadot extends Circle
 {
-   private int directionX;
-   private int directionY;
+   private double directionX;
+   private double directionY;
    
    public Polkadot(double size, int x, int y, Color c)
    {
       super(size,x,y,c);
       do
       {
-         directionX = (int)(Math.random()*4)-2;
-         directionY = (int)(Math.random()*4)-2;
-      } while(getDist(x,y,400,400)<=getDist(x+directionX,y+directionY,400,400));
+         directionX = Math.random()*4-2;
+         directionY = Math.random()*4-2;
+      } while(getDist(x,y,400,400)<=getDist(x+(int)directionX,y+(int)directionY,400,400));
    }
    
    public void move()
    {
-      updatePos(getX()+directionX,getY()+directionY);
+      updatePos(getX()+(int)directionX,getY()+(int)directionY);
    }
    
    public double getDist(int x1, int y1, int x2, int y2)
