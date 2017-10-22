@@ -2,9 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-
+import javax.imageio.ImageIO;
 public class PolkadotGame
 {
    public static void main(String[] args)
@@ -15,6 +16,7 @@ public class PolkadotGame
       polkadotFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       polkadotFrame.setContentPane(new Menu(polkadotFrame));
       polkadotFrame.setVisible(true);
+      polkadotFrame.setResizable(false);
    }
 }
 
@@ -23,6 +25,16 @@ class Menu extends JPanel
    private JFrame myFrame;
    public Menu(JFrame superFrame)
    {
+      try
+      {
+      BufferedImage myPicture = ImageIO.read(new File("PolkadotsMenu.png"));
+      JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+      add(picLabel);
+      }
+      catch(IOException e)
+      {
+         System.out.println("File not found.");
+      }
       myFrame = superFrame;
       JButton myButton = new JButton("Start!");
       myButton.addActionListener(new Listener());
