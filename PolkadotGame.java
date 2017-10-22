@@ -13,6 +13,8 @@ public class PolkadotGame
       polkadotFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       polkadotFrame.setContentPane(new PolkadotPanel());
       polkadotFrame.setVisible(true);
+      polkadotFrame.setCursor( polkadotFrame.getToolkit().createCustomCursor(
+                   new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),new Point(),null));
    }
 }
 
@@ -28,12 +30,12 @@ class PolkadotPanel extends JPanel
    {
       myImage = new BufferedImage(FRAME, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = myImage.getGraphics();
-      myMouse = new MouseDot(100,1,1,Color.RED);
+      myMouse = new MouseDot(50,1,1,randomColor());
       
       polkadots = new Polkadot[10];
       for(int i=0; i<10; i++)
       {
-         polkadots[i] = new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),Color.BLUE);
+         polkadots[i] = new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor());
       }
       
       Timer t = new Timer(1, new Listener());
@@ -93,6 +95,15 @@ class PolkadotPanel extends JPanel
       mouseY-= previous.getY();
       return mouseY;
    }
+   
+   private Color randomColor()
+   {
+      int r = (int)(Math.random()*190) + 66;
+      int g = (int)(Math.random()*190) + 66;
+      int b = (int)(Math.random()*190) + 66;
+      Color myColor = new Color(r,g,b);
+      return myColor;
+   }
 }
 
 class Polkadot extends Circle
@@ -103,8 +114,11 @@ class Polkadot extends Circle
    public Polkadot(double size, int x, int y, Color c)
    {
       super(size,x,y,c);
+      do
+      {
       directionX = (int)(Math.random()*4)-2;
       directionY = (int)(Math.random()*4)-2;
+      } while(Math.abs(directionX)==0 && Math.abs(directionY)==0);
    }
    
    public void move()
