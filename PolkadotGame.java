@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.ArrayList;
 
 public class PolkadotGame
 {
@@ -24,7 +25,7 @@ class PolkadotPanel extends JPanel
    private BufferedImage myImage;
    private Graphics myBuffer;
    private MouseDot myMouse;
-   private Polkadot[] polkadots;
+   private ArrayList<Polkadot> myDots = new ArrayList<Polkadot>();
    
    public PolkadotPanel()
    {
@@ -32,15 +33,16 @@ class PolkadotPanel extends JPanel
       myBuffer = myImage.getGraphics();
       myMouse = new MouseDot(50,1,1,randomColor());
       
-      polkadots = new Polkadot[10];
       for(int i=0; i<10; i++)
       {
-         polkadots[i] = new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor());
+         myDots.add(new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor()));
       }
       
-      Timer t = new Timer(1, new Listener());
-      t.start();
+      Timer updateScreen = new Timer(1, new Listener());
+      updateScreen.start();
       
+      Timer updateDots = new Timer(100, new DotListener());
+      updateDots.start();
    }
    
    public void paintComponent(Graphics g)
@@ -58,13 +60,22 @@ class PolkadotPanel extends JPanel
          myMouse.updatePos(getMouseX(),getMouseY());
          myMouse.drawme(myBuffer);
          
-         
-         for(int i=0; i<10; i++)
+         for (Polkadot p : myDots) 
          {
-            polkadots[i].move();
-            polkadots[i].drawme(myBuffer);
+            p.move();
+            p.drawme(myBuffer);
          }
+      
+      
          repaint();
+      }
+   }
+   
+   private class DotListener implements ActionListener
+   {
+      public void actionPerformed(ActionEvent e)
+      {
+         myDots.add(new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor()));
       }
    }
    
@@ -116,8 +127,8 @@ class Polkadot extends Circle
       super(size,x,y,c);
       do
       {
-      directionX = (int)(Math.random()*4)-2;
-      directionY = (int)(Math.random()*4)-2;
+         directionX = (int)(Math.random()*4)-2;
+         directionY = (int)(Math.random()*4)-2;
       } while(Math.abs(directionX)==0 && Math.abs(directionY)==0);
    }
    
