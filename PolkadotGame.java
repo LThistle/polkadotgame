@@ -56,17 +56,23 @@ class PolkadotPanel extends JPanel
    {
       public void actionPerformed(ActionEvent e)
       {     
-         myBuffer.setColor(Color.WHITE);    //cover the 
+         myBuffer.setColor(Color.WHITE); 
          myBuffer.fillRect(0,0,FRAME,FRAME);
          
          myMouse.updatePos(getMouseX(),getMouseY());
          myMouse.drawme(myBuffer);
          
-         for (Polkadot p : myDots) 
-         {
+         Iterator<Polkadot> myIter = myDots.iterator();
+      
+         while (myIter.hasNext()) {
+            Polkadot p = myIter.next();
             p.move();
             p.drawme(myBuffer);
-         }        
+            if(myMouse.check(p)==2)
+            {
+               myIter.remove();
+            }
+         }     
       
          repaint();
       }
@@ -173,6 +179,23 @@ class MouseDot extends Circle
    {
       eatenDots++;
       updateSize((getDiameter()*1.1));
+   }
+   
+   public int check(Polkadot p)
+   {
+      
+      double distance = Math.sqrt((Math.pow(getX()-p.getX(),2) + Math.pow(getY()-p.getY(),2)));
+      if(distance<=getRadius()+p.getRadius())
+      {
+         if(getRadius()>p.getRadius())
+         {
+            eatDot();
+            return 2;
+         }
+         else
+            return 1;
+      }
+      return 0;
    }
 }
 
