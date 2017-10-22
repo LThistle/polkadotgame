@@ -37,6 +37,7 @@ class Menu extends JPanel
       }
       myFrame = superFrame;
       JButton myButton = new JButton("Start!");
+      myButton.setPreferredSize(new Dimension(100, 40));
       myButton.addActionListener(new Listener());
       add(myButton);
    }
@@ -60,10 +61,11 @@ class PolkadotPanel extends JPanel
    private Timer t;
    private Timer t2;
    private JLabel myScore;
-   private boolean isAlive = true;
+   private JFrame myFrame;
    
    public PolkadotPanel(JFrame superFrame)
    {
+      myFrame = superFrame;
       setCursor(getToolkit().createCustomCursor(
                    new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),new Point(),null));
       myImage = new BufferedImage(FRAME, FRAME, BufferedImage.TYPE_INT_RGB);
@@ -114,9 +116,12 @@ class PolkadotPanel extends JPanel
             }
             else if(val==1)
             {
+               repaint();
                t.stop();
                t2.stop();
-               isAlive = false;
+               myFrame.setContentPane(new Menu(myFrame));   
+               myFrame.setVisible(true); 
+               break;             
             }
          }     
          repaint();
