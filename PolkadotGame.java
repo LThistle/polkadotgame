@@ -44,7 +44,7 @@ class PolkadotPanel extends JPanel
       t = new Timer(1, new Listener());
       t.start();
       
-      t2 = new Timer(500, new ExitListener());
+      t2 = new Timer(500, new UpdateListener());
       t2.start();
    }
    
@@ -85,11 +85,11 @@ class PolkadotPanel extends JPanel
       }
    }
    
-   private class ExitListener implements ActionListener
+   private class UpdateListener implements ActionListener
    {
       public void actionPerformed(ActionEvent e)
       {     
-         myDots.add(new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor()));
+         spawn();
          
          Iterator<Polkadot> myIter = myDots.iterator();
       
@@ -157,6 +157,26 @@ class PolkadotPanel extends JPanel
       if(p.getY()+p.getRadius()<=-50)
          return true;
       return false;
+   }
+   
+   private void spawn()
+   {
+      //left side
+      int x = 0;
+      int y = (int)(Math.random()*800);
+      myDots.add(new Polkadot(Math.random()*100,x,y,randomColor()));
+      //right side
+      x = 800;
+      y = (int)(Math.random()*800);
+      myDots.add(new Polkadot(Math.random()*100,x,y,randomColor()));
+      //top
+      x = (int)(Math.random()*800);
+      y = 0;
+      myDots.add(new Polkadot(Math.random()*100,x,y,randomColor()));
+      //bottom
+      x = (int)(Math.random()*800);
+      y = 800;
+      myDots.add(new Polkadot(Math.random()*100,x,y,randomColor()));
    }
 }
 
