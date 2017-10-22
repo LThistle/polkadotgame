@@ -36,7 +36,7 @@ class PolkadotPanel extends JPanel
                    new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),new Point(),null));
       myImage = new BufferedImage(FRAME, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = myImage.getGraphics();
-      myMouse = new MouseDot(50,1,1,randomColor());
+      myMouse = new MouseDot(25,1,1,randomColor());
       
       setLayout(null);
       myScore = new JLabel("0");
@@ -168,22 +168,22 @@ class PolkadotPanel extends JPanel
    private void spawn()
    {
       //left side
-      double size = Math.random()*100;
+      double size = Math.random()*myMouse.getDiameter() + myMouse.getDiameter()/1.25;
       int x = 0-(int)(size/2);
       int y = (int)(Math.random()*800);      
       myDots.add(new Polkadot(size,x,y,randomColor()));
       //right side
-      size = Math.random()*100;
+      size = Math.random()*myMouse.getDiameter() + myMouse.getDiameter()/1.25;
       x = 800+(int)(size/2);
       y = (int)(Math.random()*800);
       myDots.add(new Polkadot(size,x,y,randomColor()));      
       //top
-      size = Math.random()*100;
+      size = Math.random()*myMouse.getDiameter() + myMouse.getDiameter()/1.25;
       x = (int)(Math.random()*800);
       y = 0-(int)(size/2);
       myDots.add(new Polkadot(size,x,y,randomColor()));
       //bottom
-      size = Math.random()*100;
+      size = Math.random()*myMouse.getDiameter() + myMouse.getDiameter()/1.25;
       x = (int)(Math.random()*800);
       y = 800+(int)(size/2);
       myDots.add(new Polkadot(size,x,y,randomColor()));
