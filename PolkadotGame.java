@@ -13,8 +13,28 @@ public class PolkadotGame
       polkadotFrame.setSize(800,800);
       polkadotFrame.setLocation(400,200);
       polkadotFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      polkadotFrame.setContentPane(new PolkadotPanel());
+      polkadotFrame.setContentPane(new Menu(polkadotFrame));
       polkadotFrame.setVisible(true);
+   }
+}
+
+class Menu extends JPanel
+{
+   private JFrame myFrame;
+   public Menu(JFrame superFrame)
+   {
+      myFrame = superFrame;
+      JButton myButton = new JButton("Start!");
+      myButton.addActionListener(new Listener());
+      add(myButton);
+   }
+   private class Listener implements ActionListener
+   {
+      public void actionPerformed(ActionEvent e)
+      {   
+         myFrame.setContentPane(new PolkadotPanel(myFrame));   
+         myFrame.setVisible(true);      
+      }
    }
 }
 
@@ -30,7 +50,7 @@ class PolkadotPanel extends JPanel
    private JLabel myScore;
    private boolean isAlive = true;
    
-   public PolkadotPanel()
+   public PolkadotPanel(JFrame superFrame)
    {
       setCursor(getToolkit().createCustomCursor(
                    new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB),new Point(),null));
