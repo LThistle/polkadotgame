@@ -35,12 +35,7 @@ class PolkadotPanel extends JPanel
       myImage = new BufferedImage(FRAME, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = myImage.getGraphics();
       myMouse = new MouseDot(50,1,1,randomColor());
-      
-      for(int i=0; i<10; i++)
-      {
-         myDots.add(new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor()));
-      }
-      
+   
       t = new Timer(1, new Listener());
       t.start();
       
@@ -162,21 +157,25 @@ class PolkadotPanel extends JPanel
    private void spawn()
    {
       //left side
-      int x = 0;
-      int y = (int)(Math.random()*800);
-      myDots.add(new Polkadot(Math.random()*100,x,y,randomColor()));
+      double size = Math.random()*100;
+      int x = 0-(int)(size/2);
+      int y = (int)(Math.random()*800);      
+      myDots.add(new Polkadot(size,x,y,randomColor()));
       //right side
-      x = 800;
+      size = Math.random()*100;
+      x = 800+(int)(size/2);
       y = (int)(Math.random()*800);
-      myDots.add(new Polkadot(Math.random()*100,x,y,randomColor()));
+      myDots.add(new Polkadot(size,x,y,randomColor()));      
       //top
+      size = Math.random()*100;
       x = (int)(Math.random()*800);
-      y = 0;
-      myDots.add(new Polkadot(Math.random()*100,x,y,randomColor()));
+      y = 0-(int)(size/2);
+      myDots.add(new Polkadot(size,x,y,randomColor()));
       //bottom
+      size = Math.random()*100;
       x = (int)(Math.random()*800);
-      y = 800;
-      myDots.add(new Polkadot(Math.random()*100,x,y,randomColor()));
+      y = 800+(int)(size/2);
+      myDots.add(new Polkadot(size,x,y,randomColor()));
    }
 }
 
@@ -192,12 +191,17 @@ class Polkadot extends Circle
       {
          directionX = (int)(Math.random()*4)-2;
          directionY = (int)(Math.random()*4)-2;
-      } while(Math.abs(directionX)==0 && Math.abs(directionY)==0);
+      } while(getDist(x,y,400,400)<=getDist(x+directionX,y+directionY,400,400));
    }
    
    public void move()
    {
       updatePos(getX()+directionX,getY()+directionY);
+   }
+   
+   public double getDist(int x1, int y1, int x2, int y2)
+   {
+      return Math.sqrt((Math.pow(x1-x2,2) + Math.pow(y1-y2,2)));
    }
 }
 
