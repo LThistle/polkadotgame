@@ -18,38 +18,138 @@ public class PolkadotGame
 
 class PolkadotPanel extends JPanel
 {
+   private static final int FRAME = 800;
+   private BufferedImage myImage;
+   private Graphics myBuffer;
+   private MouseDot myMouse;
+   private Polkadot[] polkadots;
    
+   public PolkadotPanel()
+   {
+      myImage = new BufferedImage(FRAME, FRAME, BufferedImage.TYPE_INT_RGB);
+      myBuffer = myImage.getGraphics();
+      myMouse = new MouseDot(100,1,1,Color.RED);
+      
+      polkadots = new Polkadot[10];
+      for(int i=0; i<10; i++)
+      {
+         polkadots[i] = new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),Color.BLUE);
+      }
+      
+      Timer t = new Timer(1, new Listener());
+      t.start();
+      
+   }
+   
+   public void paintComponent(Graphics g)
+   {
+      g.drawImage(myImage, 0, 0, getWidth(), getHeight(), null);
+   }
+   
+   private class Listener implements ActionListener
+   {
+      public void actionPerformed(ActionEvent e)
+      {
+         myBuffer.setColor(Color.WHITE);    //cover the 
+         myBuffer.fillRect(0,0,FRAME,FRAME);
+         
+         myMouse.updatePos(getMouseX(),getMouseY());
+         myMouse.drawme(myBuffer);
+         
+         
+         for(int i=0; i<10; i++)
+         {
+            polkadots[i].move();
+            polkadots[i].drawme(myBuffer);
+         }
+         repaint();
+      }
+   }
+   
+   private int getMouseX()
+   {
+      Container container = this.getParent();
+      Container previous = container;
+      while (container != null)
+      {
+         previous = container;
+         container = container.getParent();
+      }
+      int mouseX = (int)MouseInfo.getPointerInfo().getLocation().getX();   
+      mouseX-= previous.getX();
+      return mouseX;
+   }
+   
+   private int getMouseY()
+   {
+      Container container = this.getParent();
+      Container previous = container;
+      while (container != null)
+      {
+         previous = container;
+         container = container.getParent();
+      }
+      int mouseY = (int)MouseInfo.getPointerInfo().getLocation().getY();
+      mouseY-= previous.getY();
+      return mouseY;
+   }
+}
+
+class Polkadot extends Circle
+{
+   private int directionX;
+   private int directionY;
+   
+   public Polkadot(double size, int x, int y, Color c)
+   {
+      super(size,x,y,c);
+      directionX = (int)(Math.random()*4)-2;
+      directionY = (int)(Math.random()*4)-2;
+   }
+   
+   public void move()
+   {
+      updatePos(getX()+directionX,getY()+directionY);
+   }
 }
 
 class MouseDot extends Circle
 {
-   public MouseDot(int size, int x, int y, Color color)
+   private int eatenDots = 0;
+   
+   public MouseDot(double size, int x, int y, Color c)
    {
-      super(size,x,y,color);
+      super(size,x,y,c);
+   }
+   
+   public void eatDot()
+   {
+      eatenDots++;
+      updateSize((getDiameter()*1.1));
    }
 }
 
 class Circle
 {
    private double diameter;
-   private double myX;  
-   private double myY;
+   private int myX;  
+   private int myY;
    private Color myColor;
    
-   public Circle(double size, double x, double y, Color color)
+   public Circle(double size, int x, int y, Color c)
    {
       diameter = size;
       myX = x;
       myY = y;
-      myColor = color;
+      myColor = c;
    }
    
-   public double getX()
+   public int getX()
    {
       return myX;
    }
    
-   public double getY()
+   public int getY()
    {
       return myY;
    }
@@ -62,6 +162,17 @@ class Circle
    public double getRadius()
    {
       return getDiameter()/2;
+   }
+   
+   public void updateSize(double d)
+   {
+      diameter = d;
+   }
+   
+   public void updatePos(int x, int y)
+   {
+      myX = x;
+      myY = y;
    }
    
    public void drawme(Graphics myBuffer) 
