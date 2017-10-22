@@ -27,7 +27,8 @@ class PolkadotPanel extends JPanel
    private Graphics myBuffer;
    private MouseDot myMouse;
    private ArrayList<Polkadot> myDots = new ArrayList<Polkadot>();
-   private int myTimer = 0;
+   private Timer t;
+   private Timer t2;
    
    public PolkadotPanel()
    {
@@ -40,10 +41,10 @@ class PolkadotPanel extends JPanel
          myDots.add(new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor()));
       }
       
-      Timer t = new Timer(1, new Listener());
+      t = new Timer(1, new Listener());
       t.start();
       
-      Timer t2 = new Timer(500, new ExitListener());
+      t2 = new Timer(500, new ExitListener());
       t2.start();
    }
    
@@ -68,9 +69,15 @@ class PolkadotPanel extends JPanel
             Polkadot p = myIter.next();
             p.move();
             p.drawme(myBuffer);
-            if(myMouse.check(p)==2)
+            int val = myMouse.check(p);
+            if(val==2)
             {
                myIter.remove();
+            }
+            else if(val==1)
+            {
+               t.stop();
+               t2.stop();
             }
          }     
       
