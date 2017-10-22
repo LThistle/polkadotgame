@@ -103,7 +103,7 @@ class PolkadotPanel extends JPanel
    
    private int getMouseX()
    {
-      Container container = this.getParent();
+      Container container = getParent();
       Container previous = container;
       while (container != null)
       {
@@ -117,7 +117,7 @@ class PolkadotPanel extends JPanel
    
    private int getMouseY()
    {
-      Container container = this.getParent();
+      Container container = getParent();
       Container previous = container;
       while (container != null)
       {
@@ -185,7 +185,7 @@ class MouseDot extends Circle
    public void eatDot()
    {
       eatenDots++;
-      updateSize((getDiameter()*1.1));
+      updateSize((getDiameter()+2));
    }
    
    public int check(Polkadot p)
