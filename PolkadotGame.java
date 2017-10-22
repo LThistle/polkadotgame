@@ -27,6 +27,7 @@ class PolkadotPanel extends JPanel
    private ArrayList<Polkadot> myDots = new ArrayList<Polkadot>();
    private Timer t;
    private Timer t2;
+   private JLabel myScore;
    
    public PolkadotPanel()
    {
@@ -35,7 +36,15 @@ class PolkadotPanel extends JPanel
       myImage = new BufferedImage(FRAME, FRAME, BufferedImage.TYPE_INT_RGB);
       myBuffer = myImage.getGraphics();
       myMouse = new MouseDot(50,1,1,randomColor());
+      
+      setLayout(null);
+      myScore = new JLabel("0");
+      myScore.setHorizontalAlignment(SwingConstants.RIGHT);
+      myScore.setFont((new java.awt.Font("SansSerif", 1, 100)));
+      myScore.setBounds(475, 0, 300, 100);   
+      add(myScore);
    
+      
       t = new Timer(1, new Listener());
       t.start();
       
@@ -68,6 +77,7 @@ class PolkadotPanel extends JPanel
             if(val==2)
             {
                myIter.remove();
+               myScore.setText(""+myMouse.getEaten());
             }
             else if(val==1)
             {
@@ -75,7 +85,6 @@ class PolkadotPanel extends JPanel
                t2.stop();
             }
          }     
-      
          repaint();
       }
    }
@@ -235,6 +244,11 @@ class MouseDot extends Circle
             return 1;
       }
       return 0;
+   }
+   
+   public int getEaten()
+   {
+      return eatenDots;
    }
 }
 
