@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class PolkadotGame
 {
@@ -26,6 +27,7 @@ class PolkadotPanel extends JPanel
    private Graphics myBuffer;
    private MouseDot myMouse;
    private ArrayList<Polkadot> myDots = new ArrayList<Polkadot>();
+   private int myTimer = 0;
    
    public PolkadotPanel()
    {
@@ -38,11 +40,11 @@ class PolkadotPanel extends JPanel
          myDots.add(new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor()));
       }
       
-      Timer updateScreen = new Timer(1, new Listener());
-      updateScreen.start();
+      Timer t = new Timer(1, new Listener());
+      t.start();
       
-      Timer updateDots = new Timer(100, new DotListener());
-      updateDots.start();
+      Timer t2 = new Timer(500, new ExitListener());
+      t2.start();
    }
    
    public void paintComponent(Graphics g)
@@ -53,7 +55,7 @@ class PolkadotPanel extends JPanel
    private class Listener implements ActionListener
    {
       public void actionPerformed(ActionEvent e)
-      {
+      {     
          myBuffer.setColor(Color.WHITE);    //cover the 
          myBuffer.fillRect(0,0,FRAME,FRAME);
          
@@ -64,18 +66,25 @@ class PolkadotPanel extends JPanel
          {
             p.move();
             p.drawme(myBuffer);
-         }
-      
+         }        
       
          repaint();
       }
    }
    
-   private class DotListener implements ActionListener
+   private class ExitListener implements ActionListener
    {
       public void actionPerformed(ActionEvent e)
-      {
+      {     
          myDots.add(new Polkadot(Math.random()*100,(int)(Math.random()*800),(int)(Math.random()*800),randomColor()));
+         
+         Iterator<Polkadot> myIter = myDots.iterator();
+      
+         while (myIter.hasNext()) {
+            Polkadot p = myIter.next();      
+            if(hasExited(p))
+               myIter.remove();
+         }
       }
    }
    
@@ -114,6 +123,19 @@ class PolkadotPanel extends JPanel
       int b = (int)(Math.random()*190) + 66;
       Color myColor = new Color(r,g,b);
       return myColor;
+   }
+   
+   private boolean hasExited(Polkadot p)
+   {
+      if(p.getX()-p.getRadius()>=800)
+         return true;
+      if(p.getX()+p.getRadius()<=0)
+         return true;
+      if(p.getY()-p.getRadius()>=800)
+         return true;
+      if(p.getY()+p.getRadius()<=0)
+         return true;
+      return false;
    }
 }
 
